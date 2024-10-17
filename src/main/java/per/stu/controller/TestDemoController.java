@@ -17,6 +17,8 @@ import per.stu.model.Result;
 @RequestMapping("/open-api")
 public class TestDemoController {
 
+
+
     @GetMapping("/business-1")
     public Result getA(){
         return new Result("200", "成功", "业务1");
