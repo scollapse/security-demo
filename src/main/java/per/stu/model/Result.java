@@ -1,5 +1,9 @@
 package per.stu.model;
 
+import lombok.Builder;
+import lombok.Data;
+import org.springframework.http.HttpStatus;
+
 /**
  * 统一结果类
  *
@@ -8,6 +12,8 @@ package per.stu.model;
  * @date 2024/10/17 14:17
  * @modified by
  */
+@Data
+@Builder
 public class Result {
     private String code;
     private String message;
@@ -20,6 +26,29 @@ public class Result {
         this.code = code;
         this.message = message;
         this.data = data;
+    }
+
+    /*
+     * @description 失败默认返回500 无数据
+     * @author syl
+     * @date 2024/10/21 13:58
+     * @param message
+     * @return per.stu.model.Result
+     */
+    public Result fail(String message) {
+        return new Result("internal.internal.server.error", message, null);
+    }
+
+    /*
+     * @description 成功默认返回200
+     * @author syl
+     * @date 2024/10/21 13:58
+     * @param message
+    * @param data
+     * @return per.stu.model.Result
+     */
+    public Result success(String message, Object data) {
+        return new Result("success", message, data);
     }
 
     public String getCode() {

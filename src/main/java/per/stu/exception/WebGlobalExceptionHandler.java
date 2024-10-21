@@ -25,6 +25,19 @@ public class WebGlobalExceptionHandler {
     public Result handleException(HttpServletResponse response, Exception e) {
         log.error("全局异常捕捉", e);
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        return new Result("500", e.getMessage(), null);
+        return Result.builder()
+                .code("internal.server.error")
+                .message(e.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(value = BaseException.class)
+    public Result handleException(HttpServletResponse response, BaseException e) {
+        log.error("自定义业务异常捕捉", e);
+        response.setStatus(e.getStatus().value());
+        return Result.builder()
+                .code(e.getCode())
+                .message(e.getMessage())
+                .build();
     }
 }
