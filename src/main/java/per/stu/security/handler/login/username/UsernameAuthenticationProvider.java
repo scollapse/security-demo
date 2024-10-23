@@ -2,17 +2,15 @@ package per.stu.security.handler.login.username;
 
 import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import per.stu.model.dto.LoginUser;
+import per.stu.model.vo.UserInfo;
 
 /**
  * 用户名密码登录provider
@@ -53,9 +51,9 @@ public class UsernameAuthenticationProvider implements AuthenticationProvider {
             // 抛出异常后后，AuthenticationFailureHandler的实现类会处理这个异常。
             throw new BadCredentialsException("用户名或密码不正确");
         }
-
+        UserInfo userInfo = JSON.parseObject(JSON.toJSONString(loginUser.getSysUser()), UserInfo.class);
         UsernameAuthentication token = new UsernameAuthentication();
-        token.setCurrentUser(loginUser);
+        token.setCurrentUser(userInfo);
         token.setAuthenticated(true); // 认证通过，这里一定要设成true
         return token;
     }

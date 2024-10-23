@@ -1,6 +1,5 @@
 package per.stu.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Service;
 import per.stu.mapper.SysUserMapper;
 import per.stu.model.dto.LoginUser;
 import per.stu.model.entity.SysUser;
-
-import java.util.Objects;
 
 /**
  * UserDetailsService实现类

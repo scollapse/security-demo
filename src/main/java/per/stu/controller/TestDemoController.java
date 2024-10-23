@@ -1,10 +1,12 @@
 package per.stu.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import per.stu.exception.BaseException;
+import per.stu.model.vo.UserInfo;
 import per.stu.model.vo.Result;
 
 /**
@@ -23,7 +25,8 @@ public class TestDemoController {
 
     @GetMapping("/business-1")
     public Result getA(){
-        return new Result("200", "成功", "业务1");
+        UserInfo principal = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new Result("200", "成功", principal);
     }
 
     @GetMapping("/business-2")

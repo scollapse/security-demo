@@ -10,18 +10,16 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 登录用户
+ * 类的描述
  *
  * @author babax
  * @version v1.0
- * @date 2024/10/22 11:46
+ * @date 2024/10/23 18:19
  * @modified by
  */
 @Data
 @NoArgsConstructor
 public class LoginUser implements UserDetails {
-
-    private String sessionId; // 会话id，全局唯一
 
     private SysUser sysUser;
 
@@ -29,10 +27,10 @@ public class LoginUser implements UserDetails {
         this.sysUser = sysUser;
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        return List.of((GrantedAuthority) () -> sysUser.getRole());
+        return List.of();
     }
 
     @Override
@@ -62,6 +60,6 @@ public class LoginUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return sysUser.getStatus();
+        return false;
     }
 }

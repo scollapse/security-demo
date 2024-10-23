@@ -1,7 +1,6 @@
 package per.stu.security.handler.login;
 
 import com.alibaba.fastjson2.JSON;
-import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,7 +13,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationTar
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import per.stu.exception.ExceptionTool;
-import per.stu.model.dto.LoginUser;
+import per.stu.model.vo.UserInfo;
 import per.stu.model.vo.Result;
 import per.stu.util.DateUtil;
 import per.stu.util.JwtUtil;
@@ -57,10 +56,10 @@ public class LoginSuccessHandler extends
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         logger.debug("------- LoginSuccessHandler.onAuthenticationSuccess() -------");
         Object principal = authentication.getPrincipal();
-        if (!(principal instanceof LoginUser)) {
+        if (!(principal instanceof UserInfo)) {
             ExceptionTool.throwException("Login successful, but principal is not of type LoginUser!");
         }
-        LoginUser currentUser = (LoginUser) principal;
+        UserInfo currentUser = (UserInfo) principal;
         currentUser.setSessionId(UUID.randomUUID().toString());
 
         Map<String, Object> responseData = new LinkedHashMap<>();
@@ -78,13 +77,13 @@ public class LoginSuccessHandler extends
         }
     }
 
-    public String generateToken(LoginUser currentUser) {
+    public String generateToken(UserInfo currentUser) {
         long expiredTime = DateUtil.nowMilli() + TimeUnit.MINUTES.toMillis(10); // 10分钟后过期
 //        currentUser.setExpiredTime(expiredTime);
         return JwtUtil.generateToken(currentUser, expiredTime);
     }
 
-    private String generateRefreshToken(LoginUser loginInfo) {
+    private String generateRefreshToken(UserInfo loginInfo) {
         return JwtUtil.generateToken(loginInfo, DateUtil.nowMilli() + TimeUnit.DAYS.toMillis(30));
     }
 }

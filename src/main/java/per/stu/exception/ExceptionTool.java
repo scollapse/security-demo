@@ -37,7 +37,7 @@ public class ExceptionTool {
     }
 
     public static void throwException(String code ,String message, HttpStatus httpStatus) {
-        BaseException baseException = new BaseException(code,message, defaultHttpStatus);
+        BaseException baseException = new BaseException(code,message, httpStatus);
         throw baseException;
     }
 }

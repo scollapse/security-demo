@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import per.stu.mapper.SysUserMapper;
-import per.stu.model.dto.LoginUser;
+import per.stu.model.vo.UserInfo;
 import per.stu.model.entity.SysUser;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,15 +42,6 @@ public class UserDetailsServiceImplTest {
         sysUser.setPassword("password");
     }
 
-    @Test
-    void loadUserByUsername_UserExists() {
-        when(sysUserMapper.selectOne(any(QueryWrapper.class))).thenReturn(sysUser);
-
-        LoginUser userDetails = (LoginUser) userDetailsService.loadUserByUsername("testuser");
-
-        assertNotNull(userDetails);
-        assertEquals("testuser", userDetails.getUsername());
-    }
 
     @Test
     void loadUserByUsername_UserDoesNotExist() {

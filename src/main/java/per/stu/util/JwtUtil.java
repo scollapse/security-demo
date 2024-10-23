@@ -3,24 +3,22 @@ package per.stu.util;
 import com.alibaba.fastjson2.JSON;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import per.stu.exception.ExceptionTool;
+import per.stu.model.vo.UserInfo;
 
 import java.security.*;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+
 @Component
 public  class JwtUtil implements InitializingBean {
 
@@ -117,26 +115,17 @@ public  class JwtUtil implements InitializingBean {
 
 
     public static void main(String[] args) {
-        // 示例 JSON 字符串
-                String jsonString = "{"
-                        + "\"name\":\"John\","
-                        + "\"age\":30,"
-                        + "\"address\":{"
-                        + "\"street\":\"123 Main St\","
-                        + "\"city\":\"New York\","
-                        + "\"postalCode\":\"10001\""
-                        + "},"
-                        + "\"contacts\":["
-                        + "{ \"type\":\"email\", \"value\":\"john@example.com\" },"
-                        + "{ \"type\":\"phone\", \"value\":\"1234567890\" }"
-                        + "]"
-                        + "}";
-
-                // 将 JSON 字符串解析为 Map<String, Object>
-                Map<String, Object> map = JSON.parseObject(jsonString, Map.class);
-
-                // 输出解析后的 Map
-                System.out.println(map);
+        String str = "{\"ceshi\": \"f20161111ebe-b588-896f5cbd36a6\", \n" +
+                "  \"sessionId\": \"f20162da-5367-4ebe-b588-896f5cbd36a6\",\n" +
+                "  \"sysUser\": {\n" +
+                "    \"email\": \"test@email.com\",\n" +
+                "    \"password\": \"$2a$10$wFABVe1APnJlKguWfBjJZOg/DxNtQOTU4CaNoPwl8R1sJGFlP0OiG\",\n" +
+                "    \"phoneNumber\": \"1234567890\",\n" +
+                "    \"role\": \"ADMIN\",\n" +
+                "    \"status\": true,\n" +
+                "    \"username\": \"admin\"\n" +
+                "  }\n" +
+                "}\n";
 
 
 
