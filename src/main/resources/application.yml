@@ -1,0 +1,42 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: security-service
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/security?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      timeout: 1000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){green} [%clr(%thread){red}] %clr(%-5level){blue} %clr(%logger{36}){yellow} - %msg%n"
+  level:
+    org.springframework: INFO
+
+login:
+  jwt:
+    private-key: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCaCmL88obCyBDkS5Xq/rKjjZapPBqs2YvnO8JkUOUr8rO/gG8/29qSVIuJaL8S4/yY121EzfJT5ckfiiQ4GbgC1L1slgq82xn2TP/JkWWnk1fY1R/aMsZ7CoiRP3+D2cM3QuQseMfvkR4FQLALW+BBQRM71Z203s8gnl4bEsO1dfyEAc26CVFk3g6GW8tns1YcrBdGQQmfMMg3IWVqweWPW6YW+2ixeqk/hHC9rBCe/G6wChE/03Mf3FjrDH/ugT4M+LU2hwujYX+vabZcLbudDm/7Pa0UZn/2Fy0j1LmuzmcOjY5TT+JY/xZTm7Pytt3arIT6uBtTo1V41+VX4lT9AgMBAAECggEAE6mewBX/IK7kBRgm31O6nsjsgdazuvub8Zy9sAtpbWYyDpBI4xhfuo0DMLuHpFQowqPBBWbad14eAaIjBGw4AliAg3NVlIzNMBTdE7A1DyJuNLXjtnkDv+H008GMt9pcolmuAYU7VDesYtRChHiqU/oIB/u5AUTtoIbGkWMgSzG89PrnsVyluA8VBIZ4V5vVA4K1q0ujg3j2n1dJ8JNDVg3P4ZPnt3k0d1DSStw90PfpRxBPRbSDC/fZoqoOxKnjkVxphJs1303dyuBVa8yZo4ZWFGocavNQFRZP66+iHkX9uVsgz5vmnTPIKfLx1riwT8uf6yF1GB0scmzC3P1zcQKBgQC2iePTV8Ujzn1FQbFrAZrae1GDL+DLhZyIveWiagKerJ3G6C3V7s4Ktu/wFxzxFDKqO8FQu0zPW+U2zSKAW5XEw2y8hfGLIuNAGet3obTe67+VGbbPtdAstuKNjoA1wdhhQXlAV7PShN9Hz/OjOsRcThj5Otgkp5DWIajBE4+QVQKBgQDYCHk+LJSJP8AQE+LyvA0MpGBnEmdRRMJQ8BvxRvERoPVa4QUDzrfxnfJa7aGCcORaV8505mW4PR8Qx8tiGuzQLHXVrkBSgcF+N/RjyICfHijf9+/VlFUUuvZ4gTkaH1vleZJBwAldaqChH+gHnAHGfuJLFHZVlOnq318WA5c6CQKBgD6pw34v6UtLfZGi5acYW/KY1vi0HPWBHqWKmyRQRCn4lAlOdz2zxyPCfUfsh1DzYBk0fj6ardmZcGyJq0hpKFbtx4xIZw0eoujEfSMKbi8AuzoSI8HWZmqTNd7mhnjt3Lw2X8uI0AB7ALOEXd0xNWuCm+wjGUQsCfqYf3gYoPYpAoGAHA1NoRMs3n2WtP/AEoD0uNWHZxruq5DgIp5rInNxzjY2ZeyeOBZZsFgwJjqBJG0AWfLY7jkUsE3PgOBQupaAda+wRWTxGUWcGIWviF16xi6mZB7P184BFkYIxzEQdyHnTu7wXPVQwf6ciQ+Zk5Ngb6P+Qn2PuCE0FrmWoUcqFfECgYBpmHDCbTllbMvuoPI+m0fy9hsuWDcjl96cmfSXSgas2APU/3+H/LRRRVwI0pOYrBczbzYf2zS5fkoVblJBGv7iZRBQG46E+ZhQLc1LnYZb2CXPNEoH8RSWFlt9Tn1EeUnjk6EtthbSh8TJAeGVDfvdmGmUgmOCu4ukSnx/whuVLw==
+    public-Key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmgpi/PKGwsgQ5EuV6v6yo42WqTwarNmL5zvCZFDlK/Kzv4BvP9vaklSLiWi/EuP8mNdtRM3yU+XJH4okOBm4AtS9bJYKvNsZ9kz/yZFlp5NX2NUf2jLGewqIkT9/g9nDN0LkLHjH75EeBUCwC1vgQUETO9WdtN7PIJ5eGxLDtXX8hAHNuglRZN4OhlvLZ7NWHKwXRkEJnzDINyFlasHlj1umFvtosXqpP4RwvawQnvxusAoRP9NzH9xY6wx/7oE+DPi1NocLo2F/r2m2XC27nQ5v+z2tFGZ/9hctI9S5rs5nDo2OU0/iWP8WU5uz8rbd2qyE+rgbU6NVeNflV+JU/QIDAQAB

@@ -34,6 +34,11 @@ public class BaseException extends RuntimeException {
         this.status = HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
+    public BaseException(HttpStatus status) {
+        this.code = String.valueOf(status.value());
+        this.status = HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+
     public String getCode() {
         return code;
     }

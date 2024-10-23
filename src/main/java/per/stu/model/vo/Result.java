@@ -1,8 +1,7 @@
-package per.stu.model;
+package per.stu.model.vo;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 
 /**
  * 统一结果类
@@ -33,10 +32,14 @@ public class Result {
      * @author syl
      * @date 2024/10/21 13:58
      * @param message
-     * @return per.stu.model.Result
+     * @return per.stu.model.vo.Result
      */
-    public Result fail(String message) {
-        return new Result("internal.internal.server.error", message, null);
+    public static Result fail(String message) {
+        return new Result("internal.internal.server.error", message, "");
+    }
+
+    public static Result fail(String code,String message) {
+        return new Result(code, message, "");
     }
 
     /*
@@ -45,9 +48,9 @@ public class Result {
      * @date 2024/10/21 13:58
      * @param message
     * @param data
-     * @return per.stu.model.Result
+     * @return per.stu.model.vo.Result
      */
-    public Result success(String message, Object data) {
+    public static Result success(String message, Object data) {
         return new Result("success", message, data);
     }
 

@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import per.stu.model.Result;
-
+import per.stu.model.vo.Result;
+import org.springframework.security.core.AuthenticationException;
 /**
  * 全局异常捕捉
  *
@@ -37,6 +37,17 @@ public class WebGlobalExceptionHandler {
         response.setStatus(e.getStatus().value());
         return Result.builder()
                 .code(e.getCode())
+                .message(e.getMessage())
+                .build();
+    }
+
+    // 处理认证异常
+    @ExceptionHandler(AuthenticationException.class)
+    public Result handleAuthenticationException(AuthenticationException e, HttpServletResponse response) {
+        log.error("认证异常捕捉", e);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        return Result.builder()
+                .code("authentication.error")
                 .message(e.getMessage())
                 .build();
     }

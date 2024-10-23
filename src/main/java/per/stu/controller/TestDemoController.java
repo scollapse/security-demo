@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import per.stu.exception.BaseException;
-import per.stu.model.Result;
+import per.stu.model.vo.Result;
 
 /**
  * 测试控制类
