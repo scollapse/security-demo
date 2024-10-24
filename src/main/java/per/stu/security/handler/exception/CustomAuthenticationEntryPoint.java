@@ -20,6 +20,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {
         Result unauthorizedAccess = Result.builder()
+                .success(false)
                 .code("Unauthorized access")
                 .message(authException.getMessage())
                 .build();

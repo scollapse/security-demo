@@ -25,20 +25,14 @@ public class WebGlobalExceptionHandler {
     public Result handleException(HttpServletResponse response, Exception e) {
         log.error("全局异常捕捉", e);
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        return Result.builder()
-                .code("internal.server.error")
-                .message(e.getMessage())
-                .build();
+        return Result.fail("internal.server.error",e.getMessage());
     }
 
     @ExceptionHandler(value = BaseException.class)
     public Result handleException(HttpServletResponse response, BaseException e) {
         log.error("自定义业务异常捕捉", e);
         response.setStatus(e.getStatus().value());
-        return Result.builder()
-                .code(e.getCode())
-                .message(e.getMessage())
-                .build();
+        return Result.fail(e.getCode(), e.getMessage());
     }
 
     // 处理认证异常
@@ -46,9 +40,6 @@ public class WebGlobalExceptionHandler {
     public Result handleAuthenticationException(AuthenticationException e, HttpServletResponse response) {
         log.error("认证异常捕捉", e);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        return Result.builder()
-                .code("authentication.error")
-                .message(e.getMessage())
-                .build();
+        return Result.fail("authentication.error", e.getMessage());
     }
 }

@@ -49,6 +49,7 @@ public class CustomSecurityExceptionHandler extends OncePerRequestFilter {
     private void handleException(HttpServletResponse response, String message, String code, int status) throws
             IOException {
         Result result = Result.builder()
+                .success(false)
                 .message(message)
                 .code(code)
                 .build();
