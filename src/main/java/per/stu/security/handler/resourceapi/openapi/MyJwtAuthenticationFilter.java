@@ -1,7 +1,5 @@
-package per.stu.security.handler.login.resourceapi.openapi;
+package per.stu.security.handler.resourceapi.openapi;
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,7 +13,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import per.stu.exception.ExceptionTool;
 import per.stu.model.vo.UserInfo;
-import per.stu.model.entity.SysUser;
 import per.stu.util.JwtUtil;
 
 import java.io.IOException;

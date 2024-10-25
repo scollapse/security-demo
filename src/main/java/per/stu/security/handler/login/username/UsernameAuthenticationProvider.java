@@ -1,6 +1,8 @@
 package per.stu.security.handler.login.username;
 
 import com.alibaba.fastjson2.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import per.stu.model.dto.LoginUser;
 import per.stu.model.vo.UserInfo;
+import per.stu.security.handler.register.username.UsernameRegisterFilter;
 
 /**
  * 用户名密码登录provider
@@ -22,6 +25,8 @@ import per.stu.model.vo.UserInfo;
  */
 @Component
 public class UsernameAuthenticationProvider implements AuthenticationProvider {
+
+    private static final Logger logger = LoggerFactory.getLogger(UsernameAuthenticationProvider.class);
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -36,7 +41,7 @@ public class UsernameAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        System.out.printf("------- UsernameAuthenticationProvider.authenticate() -------");
+        logger.debug("------- UsernameAuthenticationProvider.authenticate() -------");
         // 用户提交的用户名 + 密码：
         String username = (String)authentication.getPrincipal();
         String password = (String) authentication.getCredentials();

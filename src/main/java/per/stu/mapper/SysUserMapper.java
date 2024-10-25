@@ -13,4 +13,9 @@ import per.stu.model.entity.SysUser;
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
+
+    // 根据用户名查询用户信息
+    SysUser selectByUsername(String username);
+
+    void addUser(SysUser addUser);
 }

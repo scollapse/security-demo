@@ -29,13 +29,6 @@ public class Result {
         this.success = success;
     }
 
-    /*
-     * @description 失败默认返回500 无数据
-     * @author syl
-     * @date 2024/10/21 13:58
-     * @param message
-     * @return per.stu.model.vo.Result
-     */
     public static Result fail(String message) {
         return new Result("internal.internal.server.error", message, "",false);
     }
@@ -44,16 +37,16 @@ public class Result {
         return new Result(code, message, "",false);
     }
 
-    /*
-     * @description 成功默认返回200
-     * @author syl
-     * @date 2024/10/21 13:58
-     * @param message
-    * @param data
-     * @return per.stu.model.vo.Result
-     */
     public static Result success(String message, Object data) {
         return new Result("success", message, data,true);
+    }
+
+    public static Result success(String code,String message) {
+        return new Result(code, message, "",true);
+    }
+
+    public static Result success(String code,String message, Object data) {
+        return new Result(code, message, data,true);
     }
 
     public String getCode() {

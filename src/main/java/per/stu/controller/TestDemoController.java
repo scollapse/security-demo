@@ -26,7 +26,7 @@ public class TestDemoController {
     @GetMapping("/business-1")
     public Result getA(){
         UserInfo principal = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return new Result("200", "成功", principal);
+        return new Result("200", "成功", principal,true);
     }
 
     @GetMapping("/business-2")
@@ -34,7 +34,7 @@ public class TestDemoController {
         if (true) {
             throw new RuntimeException("业务2异常");
         }
-        return new Result("200", "成功", "业务2");
+        return new Result("200", "成功", "业务2",true);
     }
 
     @GetMapping("/business-3")
@@ -45,7 +45,7 @@ public class TestDemoController {
             HttpStatus status = HttpStatus.UNAUTHORIZED; //401
             throw new BaseException(code, message, status);
         }
-        return new Result("200", "成功", "业务3");
+        return new Result("200", "成功", "业务3",true);
     }
 
 }

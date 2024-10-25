@@ -1,4 +1,4 @@
-package per.stu.security.handler.login.resourceapi.openapi;
+package per.stu.security.handler.resourceapi.openapi;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import per.stu.model.vo.UserInfo;

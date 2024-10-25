@@ -21,7 +21,11 @@ import per.stu.security.handler.exception.CustomAuthenticationEntryPoint;
 import per.stu.security.handler.exception.CustomSecurityExceptionHandler;
 import per.stu.security.handler.login.LoginFailHandler;
 import per.stu.security.handler.login.LoginSuccessHandler;
-import per.stu.security.handler.login.resourceapi.openapi.MyJwtAuthenticationFilter;
+import per.stu.security.handler.register.RegisterFailHandler;
+import per.stu.security.handler.register.RegisterSuccessHandler;
+import per.stu.security.handler.register.username.UsernameRegisterFilter;
+import per.stu.security.handler.register.username.UsernameRegisterProvider;
+import per.stu.security.handler.resourceapi.openapi.MyJwtAuthenticationFilter;
 import per.stu.security.handler.login.username.UsernameAuthenticationFilter;
 import per.stu.security.handler.login.username.UsernameAuthenticationProvider;
 
@@ -96,6 +100,28 @@ public class SecurityConfig {
     }
 
     /*
+     * @description 注册过滤器链，配置注册请求的授权规则
+     * @author syl
+     * @date 2024/10/25 17:28
+     * @param http
+     * @return org.springframework.security.web.SecurityFilterChain
+     */
+    @Bean
+    public SecurityFilterChain registerFilterChain(HttpSecurity http) throws Exception {
+        commonHttpSetting(http);
+        // 配置请求的授权规则
+        http
+                .securityMatcher("/user/register/**")
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated()
+                );
+        // 配置自定义的filter
+        http
+                .addFilterBefore(usernameRegisterFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
+
+    /*
      * @description 业务接口过滤器链，配置业务接口请求的授权规则，配置自定义的filter
      * @author syl
      * @date 2024/10/23 14:48
@@ -118,10 +144,6 @@ public class SecurityConfig {
     }
 
 
-
-
-
-
     /*
      * @description 用户名密码登录过滤器
      * @author syl
@@ -139,6 +161,26 @@ public class SecurityConfig {
                         List.of(applicationContext.getBean(UsernameAuthenticationProvider.class))),
                 loginSuccessHandler,
                 loginFailHandler);
+    }
+
+
+    /*
+     * @description 用户名密码注册过滤器
+     * @author syl
+     * @date 2024/10/25 17:29
+     * @param
+     * @return per.stu.security.handler.login.username.UsernameAuthenticationFilter
+     */
+    @Bean
+    public UsernameRegisterFilter usernameRegisterFilter () {
+        RegisterSuccessHandler registerSuccessHandler = applicationContext.getBean(RegisterSuccessHandler.class);
+        RegisterFailHandler registerFailHandler = applicationContext.getBean(RegisterFailHandler.class);
+        return new UsernameRegisterFilter(
+                new AntPathRequestMatcher("/user/register/username", HttpMethod.POST.name()),
+                new ProviderManager(
+                        List.of(applicationContext.getBean(UsernameRegisterProvider.class))),
+                registerSuccessHandler,
+                registerFailHandler);
     }
 
 

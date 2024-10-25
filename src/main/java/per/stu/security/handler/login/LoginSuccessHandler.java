@@ -37,9 +37,6 @@ import java.util.concurrent.TimeUnit;
 public class LoginSuccessHandler extends
         AbstractAuthenticationTargetUrlRequestHandler implements AuthenticationSuccessHandler {
 
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
-
     public LoginSuccessHandler() {
         this.setRedirectStrategy(new RedirectStrategy() {
             @Override
