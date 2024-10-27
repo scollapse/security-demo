@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.stereotype.Component;
 
 /**
  * redis配置
@@ -14,6 +15,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * @date 2024/10/21 18:09
  * @modified by
  */
+@Component
 public class RedisConfig {
     // redis使用fastjson2序列化
     @Bean

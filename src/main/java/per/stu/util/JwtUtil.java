@@ -12,6 +12,8 @@ import per.stu.exception.ExceptionTool;
 import per.stu.model.vo.UserInfo;
 
 import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
@@ -115,41 +117,26 @@ public  class JwtUtil implements InitializingBean {
 
 
     public static void main(String[] args) {
-        String str = "{\"ceshi\": \"f20161111ebe-b588-896f5cbd36a6\", \n" +
-                "  \"sessionId\": \"f20162da-5367-4ebe-b588-896f5cbd36a6\",\n" +
-                "  \"sysUser\": {\n" +
-                "    \"email\": \"test@email.com\",\n" +
-                "    \"password\": \"$2a$10$wFABVe1APnJlKguWfBjJZOg/DxNtQOTU4CaNoPwl8R1sJGFlP0OiG\",\n" +
-                "    \"phoneNumber\": \"1234567890\",\n" +
-                "    \"role\": \"ADMIN\",\n" +
-                "    \"status\": true,\n" +
-                "    \"username\": \"admin\"\n" +
-                "  }\n" +
-                "}\n";
+        try {
+            // 创建 KeyPairGenerator 对象
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+            keyPairGenerator.initialize(2048, new SecureRandom()); // 设置密钥长度为2048位
 
+            // 生成密钥对
+            KeyPair keyPair = keyPairGenerator.generateKeyPair();
+            RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+            RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
 
+            // 使用 Base64 编码公钥和私钥
+            String base64PublicKey = Base64.getEncoder().encodeToString(publicKey.getEncoded());
+            String base64PrivateKey = Base64.getEncoder().encodeToString(privateKey.getEncoded());
 
-//        try {
-//            // 创建 KeyPairGenerator 对象
-//            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-//            keyPairGenerator.initialize(2048, new SecureRandom()); // 设置密钥长度为2048位
-//
-//            // 生成密钥对
-//            KeyPair keyPair = keyPairGenerator.generateKeyPair();
-//            RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-//            RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-//
-//            // 使用 Base64 编码公钥和私钥
-//            String base64PublicKey = Base64.getEncoder().encodeToString(publicKey.getEncoded());
-//            String base64PrivateKey = Base64.getEncoder().encodeToString(privateKey.getEncoded());
-//
-//            // 输出公钥和私钥
-//            System.out.println("公钥:\n" + base64PublicKey);
-//            System.out.println("私钥:\n" + base64PrivateKey);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
+            // 输出公钥和私钥
+            System.out.println("公钥:\n" + base64PublicKey);
+            System.out.println("私钥:\n" + base64PrivateKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

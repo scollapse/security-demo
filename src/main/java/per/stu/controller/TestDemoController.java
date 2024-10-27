@@ -18,7 +18,7 @@ import per.stu.model.vo.Result;
  * @modified by
  */
 @RestController
-@RequestMapping("/open-api")
+@RequestMapping("/api")
 public class TestDemoController {
 
 

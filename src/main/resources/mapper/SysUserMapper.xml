@@ -7,12 +7,12 @@
 
     <select id="selectByUsername" resultType="per.stu.model.entity.SysUser">
         select id,username,`password`,email,phone_number,`role`,`status`,created_at,updated_at,last_login,failed_attempts,account_locked,
-        account_expiration,password_expiration from sys_user where username = #{username}
+        account_expiration,password_expiration,token_batch_num from sys_user where username = #{username}
     </select>
 
     <insert id="addUser" parameterType="per.stu.model.entity.SysUser">
         insert into sys_user(username,`password`,email,phone_number,`role`,`status`,created_at,updated_at,last_login,failed_attempts,account_locked,
-        account_expiration,password_expiration) values(#{username},#{password},#{email},#{phoneNumber},#{role},#{status},#{createdAt},#{updatedAt},#{lastLogin},#{failedAttempts},#{accountLocked},
-        #{accountExpiration},#{passwordExpiration})
+        account_expiration,password_expiration,token_batch_num) values(#{username},#{password},#{email},#{phoneNumber},#{role},#{status},#{createdAt},#{updatedAt},#{lastLogin},#{failedAttempts},#{accountLocked},
+        #{accountExpiration},#{passwordExpiration},#{tokenBatchNum})
     </insert>
 </mapper>

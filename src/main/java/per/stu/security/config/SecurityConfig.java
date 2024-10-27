@@ -133,7 +133,7 @@ public class SecurityConfig {
         commonHttpSetting(http);
         // 配置请求的授权规则
         http
-                .securityMatcher("/open-api/business-1")
+                .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated()
                 );

@@ -3,6 +3,7 @@ package per.stu.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,7 +13,9 @@ import per.stu.exception.ExceptionTool;
 import per.stu.mapper.SysUserMapper;
 import per.stu.model.dto.LoginUser;
 import per.stu.model.entity.SysUser;
+import per.stu.model.vo.UserInfo;
 import per.stu.security.handler.login.username.UsernameAuthenticationProvider;
+import per.stu.util.DateUtil;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -58,6 +61,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             SysUser addUser = SysUser.builder()
                     .username(username)
                     .password(passwordEncoder.encode(password))
+                    // 增加批次号
+                    .tokenBatchNum(String.valueOf(DateUtil.nowMilli()))
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .build();
@@ -66,5 +71,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             logger.error("注册失败", e);
             ExceptionTool.throwException("注册失败");
         }
+    }
+
+    public static UserInfo getUserInfo(){
+        return (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

@@ -11,9 +11,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import per.stu.constant.GlobalConstants;
 import per.stu.model.dto.LoginUser;
 import per.stu.model.vo.UserInfo;
 import per.stu.security.handler.register.username.UsernameRegisterFilter;
+import per.stu.util.RedisUtil;
 
 /**
  * 用户名密码登录provider
@@ -45,7 +48,9 @@ public class UsernameAuthenticationProvider implements AuthenticationProvider {
         // 用户提交的用户名 + 密码：
         String username = (String)authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
-
+        if (!StringUtils.hasText(username) || !StringUtils.hasText(password)) {
+            throw new BadCredentialsException("用户名或密码不能为空");
+        }
         // 查数据库，匹配用户信息
         LoginUser loginUser = (LoginUser) userDetailsService.loadUserByUsername(username);
         if (loginUser == null
@@ -57,6 +62,8 @@ public class UsernameAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("用户名或密码不正确");
         }
         UserInfo userInfo = JSON.parseObject(JSON.toJSONString(loginUser.getSysUser()), UserInfo.class);
+        // 从redis中获取token序列号并自增赋值
+        userInfo.setTokenSeqNum(String.valueOf(RedisUtil.increment(GlobalConstants.REDIS_TOKEN_SEQ_NUM)));
         UsernameAuthentication token = new UsernameAuthentication();
         token.setCurrentUser(userInfo);
         token.setAuthenticated(true); // 认证通过，这里一定要设成true

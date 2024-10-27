@@ -21,4 +21,9 @@ public class DateUtil {
     public static long nowMilli() {
         return System.currentTimeMillis();
     }
+
+    // 分钟转秒
+    public static long minuteToSecond(long minute) {
+        return minute * 60;
+    }
 }

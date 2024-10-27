@@ -26,11 +26,15 @@ public class UserInfo {
 
     private String sessionId; // 会话id，全局唯一
 
+    // token序列号
+    private String tokenSeqNum;
+
+    // token批次号
+    private String tokenBatchNum;
+
     private Long id; // 用户唯一ID
 
     private String username; // 用户名，唯一
-
-    private String password; // 用户密码（应加密存储）
 
     private String email; // 邮箱地址，唯一
 

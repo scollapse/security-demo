@@ -11,9 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import per.stu.constant.GlobalConstants;
+import per.stu.exception.BaseException;
 import per.stu.exception.ExceptionTool;
 import per.stu.model.vo.UserInfo;
 import per.stu.util.JwtUtil;
+import per.stu.util.RedisUtil;
 
 import java.io.IOException;
 
@@ -35,25 +38,34 @@ public class MyJwtAuthenticationFilter extends OncePerRequestFilter {
 
         String jwtToken = request.getHeader("Authorization");
         if (StringUtils.isEmpty(jwtToken)) {
-            ExceptionTool.throwException("miss.token","JWT token is missing!", HttpStatus.UNAUTHORIZED);
+            ExceptionTool.throwException("token.miss","JWT token is missing!", HttpStatus.UNAUTHORIZED);
         }
         if (jwtToken.startsWith("Bearer ")) {
             jwtToken = jwtToken.substring(7);
         }
         try {
-            UserInfo UserInfo = JwtUtil.verifyJwt(jwtToken, UserInfo.class);
+            // 验证jwt的有效性
+            UserInfo userInfo = JwtUtil.verifyJwt(jwtToken, UserInfo.class);
+            // 验证jwt是否存在于黑名单
+            String batchNumKey = userInfo.getUsername()+userInfo.getTokenBatchNum();
+            String seqNumKey = userInfo.getUsername()+userInfo.getTokenSeqNum();
+            if (RedisUtil.hasKey(GlobalConstants.REDIS_TOKEN_BLACKLIST+batchNumKey) || RedisUtil.hasKey(GlobalConstants.REDIS_TOKEN_BLACKLIST+seqNumKey)) {
+                ExceptionTool.throwException("token.invalid","JWT token is invalid!", HttpStatus.UNAUTHORIZED);
+            }
             MyJwtAuthentication authentication = new MyJwtAuthentication();
             authentication.setJwtToken(jwtToken);
             authentication.setAuthenticated(true); // 设置true，认证通过。
-            authentication.setCurrentUser(UserInfo);
+            authentication.setCurrentUser(userInfo);
             // 认证通过后，一定要设置到SecurityContextHolder里面去。
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }catch (ExpiredJwtException e) {
             // 转换异常，指定code，让前端知道时token过期，去调刷新token接口
             ExceptionTool.throwException("token.expired","jwt过期", HttpStatus.UNAUTHORIZED);
-        } catch (Exception e) {
+        }catch (BaseException e){
+            ExceptionTool.throwException(e.getCode(),e.getMessage(),e.getStatus());
+        }catch (Exception e) {
             e.printStackTrace();
-            ExceptionTool.throwException("token.invalid","jwt无效", HttpStatus.UNAUTHORIZED);
+            ExceptionTool.throwException("token.verify.error","jwt验证失败", HttpStatus.UNAUTHORIZED);
         }
         // 放行
         filterChain.doFilter(request, response);

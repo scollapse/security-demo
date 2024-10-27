@@ -17,6 +17,7 @@ import per.stu.security.handler.login.username.UsernameAuthentication;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -48,8 +49,9 @@ public class UsernameRegisterFilter extends AbstractAuthenticationProcessingFilt
         String requestJsonData = request.getReader().lines()
                 .collect(Collectors.joining(System.lineSeparator()));
         Map<String, Object> requestMapData = JSON.parseObject(requestJsonData, Map.class);
-        String username = requestMapData.get("username").toString();
-        String password = requestMapData.get("password").toString();
+        Optional<Map<String, Object>> optionalStringObjectMap = Optional.ofNullable(requestMapData);
+        String username = optionalStringObjectMap.map(map -> map.get("username")).map(Object::toString).orElse(null);
+        String password = optionalStringObjectMap.map(map -> map.get("password")).map(Object::toString).orElse(null);
         // 封装成Spring Security需要的对象
         UsernameRegister authentication = new UsernameRegister();
         authentication.setUsername(username);

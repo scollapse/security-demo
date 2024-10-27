@@ -49,4 +49,6 @@ public class SysUser implements Serializable {
     private LocalDateTime accountExpiration; // 帐号过期时间
 
     private LocalDateTime passwordExpiration; // 密码过期时间
+
+    private String tokenBatchNum; // token批次号
 }
